@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<body>
+<button class="button" id="grind">Grind Begin</button>
+<button class="button"  id="pog">Grind Stop</button>
+<p id = "status">Not Studying</p>
+<p >Coins:</p>
+<p id = "coincount">0</p>
+<h3>Activities</h3>
+<button class="button" onclick="spend(40)">1 Youtube video (40) </button>
+<button class="button" onclick="spend(120)">1hr free time (120) </button>
+<button class="button" onclick="spend(500)">6hrs free time (500)</button>
+<button class="button" onclick="spend(20)">"That" (20) </button>
+<button class="button" onclick="spend(10)">Manga 1 Chapter (10) </button>
+<button class="button" onclick="spend(60)">20 minute TV show (60)</button>
+<button class="button" onclick="spend(50)">Manga 10 Chapters (50)</button>
+<h3>Last Break</h3>
+<p id="break">No Break Yet</p>
+<h3>Sleeping</h3>
+<button class="button" id="sleep">Sleep</button>
+
+
+
+
+<script>
+//10pm sleep alarm
+var date = new Date()
+var msuntil10pm = date.setHours(22, 0 , 0, 0) - new Date()
+window.setTimeout(function(){ countdown(); },msuntil10pm);
+var interval2
+function countdown() {
+  var time = new Date().getTime();
+  interval2 = setInterval(function () {
+    if (new Date().getTime() > time + 60000){
+      time = new Date().getTime()
+      coins -= 1;
+      document.getElementById("coincount").innerHTML =  coins;
+      localStorage.setItem("coins", coins);
+    }
+  });
+}
+//sleepalarmstop
+document.getElementById("sleep").onclick = function() {
+    clearInterval(interval2);}
+//store
+//makes gridn stop invis
+var coins = Number(localStorage.getItem("coins"))
+document.getElementById("pog").style.display = "none";
+//gets ur voincs
+document.getElementById("coincount").innerHTML = localStorage.getItem("coins")
+var interval;
+//starts buttonpress
+document.getElementById("grind").onclick = function() {buttonpress()};
+//button press func
+function buttonpress() {
+    document.getElementById("grind").style.display = "none";
+    document.getElementById("pog").style.display = "block";
+  var time = new Date().getTime();
+  document.getElementById("status").innerHTML = "Studying";
+  console.log("pog");
+  interval = setInterval(function () {
+    if (new Date().getTime() > time + 60000){
+        time = new Date().getTime()
+        coins += 1;
+        document.getElementById("coincount").innerHTML =  coins;
+        localStorage.setItem("coins", coins);
+    }
+  });
+  }
+
+//grind stop stuff
+document.getElementById("pog").onclick = function() {
+    clearInterval(interval);
+    document.getElementById("grind").style.display = "block";
+    document.getElementById("pog").style.display = "none";
+    document.getElementById("status").innerHTML = "Not Studying";
+};
+//spending stuff
+function spend(price){
+    if(coins>=price){
+       coins-= price; 
+        document.getElementById("coincount").innerHTML =  coins;
+        localStorage.setItem("coins", coins)
+        document.getElementById("break").innerHTML = String(new Date().getHours())+":"+ String(new Date().getMinutes())
+
+    }
+};
+</script>
+<style>
+.button {
+  background-color:white;
+  border: 2px solid #008CBA;
+  color: black;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: #008CBA;
+  color: white;
+}
+</style>
+</body>
+</html>
